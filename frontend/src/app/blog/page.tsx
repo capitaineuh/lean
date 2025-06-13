@@ -19,7 +19,7 @@ export default async function BlogPage() {
   let articles: Article[] = [];
   try {
     articles = await getArticles();
-  } catch (e) {
+  } catch {
     return <div className="p-8">Erreur lors du chargement des articles.</div>;
   }
 
