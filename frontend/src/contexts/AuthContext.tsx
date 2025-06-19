@@ -91,7 +91,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (user) {
       console.log('[Auth] updateUser appelé avec user.id =', user.id);
       const updatedUser = await authService.updateProfile(user.id, userData);
-      setUser(updatedUser as User);
+      const userObj = updatedUser as User;
+      const userWithId = { ...userObj, id: userObj.id || (userObj as any)._id };
+      setUser(userWithId as User);
     }
   };
 
