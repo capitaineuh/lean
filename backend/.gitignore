@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Dependencies
 node_modules/
 /.pnp
@@ -104,29 +103,3 @@ Thumbs.db
 
 # Diagnostic reports
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json 
-=======
-# Node modules
-node_modules/
-
-# Build output
-dist/
-
-# Environnements
-.env
-.env.*
-
-# Logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-
-# Système
-.DS_Store
-Thumbs.db
-
-# Autres
-coverage/
-.idea/
-.vscode/ 
->>>>>>> 374ce3a (up to date)

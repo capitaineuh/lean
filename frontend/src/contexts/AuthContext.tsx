@@ -32,15 +32,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const token = authService.getToken();
     if (token) {
       const payload = JSON.parse(atob(token.split('.')[1]));
-      authService.fetchProfile(payload.sub).then((u) => setUser(u as User)).catch(() => setUser(null));
+      const userId = payload.sub || payload.id || payload._id;
+      if (userId) {
+        authService.fetchProfile(userId).then((u) => setUser(u as User)).catch(() => setUser(null));
+      }
     }
   }, []);
 
   const login = async (_userData: User, token: string) => {
     localStorage.setItem('token', token);
     const payload = JSON.parse(atob(token.split('.')[1]));
-    const freshUser = await authService.fetchProfile(payload.sub);
-    setUser(freshUser as User);
+    const userId = payload.sub || payload.id || payload._id;
+    if (userId) {
+      const freshUser = await authService.fetchProfile(userId);
+      setUser(freshUser as User);
+    }
   };
 
   const logout = () => {
