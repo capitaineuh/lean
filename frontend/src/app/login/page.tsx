@@ -33,7 +33,7 @@ export default function LoginPage() {
         throw new Error(data.message || 'Erreur de connexion');
       }
 
-      login(data.user, data.access_token);
+      await login(data.user, data.access_token);
       if (data.user.isArtisan) {
         router.push('/app/artisans');
       } else {

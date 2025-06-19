@@ -10,14 +10,12 @@ async function bootstrap() {
         const app = await core_1.NestFactory.create(app_module_1.AppModule, {
             logger: ['error', 'warn', 'debug', 'log', 'verbose'],
         });
-        const corsOrigins = process.env.CORS_ORIGIN
-            ? process.env.CORS_ORIGIN.split(',')
-            : ['http://localhost:3000'];
         app.enableCors({
-            origin: corsOrigins,
-            methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+            origin: [
+                'https://lean-umber.vercel.app',
+                'http://localhost:3000',
+            ],
             credentials: true,
-            allowedHeaders: 'Content-Type, Accept, Authorization',
         });
         app.setGlobalPrefix('api');
         if (process.env.NODE_ENV === 'production') {

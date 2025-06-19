@@ -36,7 +36,7 @@ const METIERS = [
 ];
 
 export default function ProfilePage() {
-  const { user } = useAuth();
+  const { user, updateUser } = useAuth();
   const [profile, setProfile] = useState<UserProfile>({
     firstName: '',
     lastName: '',
@@ -93,8 +93,7 @@ export default function ProfilePage() {
     setMessage({ type: '', text: '' });
 
     try {
-      // Ici, vous pourriez envoyer les données à votre API
-      await new Promise(resolve => setTimeout(resolve, 1000)); // Simulation d'appel API
+      await updateUser(profile);
       setMessage({ type: 'success', text: 'Profil mis à jour avec succès !' });
       setIsEditing(false);
     } catch (error) {
