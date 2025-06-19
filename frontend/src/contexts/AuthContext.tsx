@@ -30,22 +30,51 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const token = authService.getToken();
+    console.log('[Auth] Token récupéré du localStorage :', token);
     if (token) {
-      const payload = JSON.parse(atob(token.split('.')[1]));
-      const userId = payload.sub || payload.id || payload._id;
-      if (userId) {
-        authService.fetchProfile(userId).then((u) => setUser(u as User)).catch(() => setUser(null));
+      try {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        console.log('[Auth] Payload décodé du token :', payload);
+        const userId = payload.sub || payload.id || payload._id;
+        console.log('[Auth] userId extrait du token :', userId);
+        if (userId) {
+          authService.fetchProfile(userId)
+            .then((u) => {
+              console.log('[Auth] Profil utilisateur récupéré via API :', u);
+              setUser(u as User);
+            })
+            .catch((err) => {
+              console.error('[Auth] Erreur lors de la récupération du profil utilisateur :', err);
+              setUser(null);
+            });
+        } else {
+          console.warn('[Auth] Aucun userId trouvé dans le token');
+        }
+      } catch (err) {
+        console.error('[Auth] Erreur lors du décodage du token :', err);
       }
+    } else {
+      console.warn('[Auth] Aucun token trouvé dans le localStorage');
     }
   }, []);
 
   const login = async (_userData: User, token: string) => {
     localStorage.setItem('token', token);
-    const payload = JSON.parse(atob(token.split('.')[1]));
-    const userId = payload.sub || payload.id || payload._id;
-    if (userId) {
-      const freshUser = await authService.fetchProfile(userId);
-      setUser(freshUser as User);
+    console.log('[Auth] Token stocké lors du login :', token);
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      console.log('[Auth] Payload décodé du token (login) :', payload);
+      const userId = payload.sub || payload.id || payload._id;
+      console.log('[Auth] userId extrait du token (login) :', userId);
+      if (userId) {
+        const freshUser = await authService.fetchProfile(userId);
+        console.log('[Auth] Profil utilisateur récupéré via API (login) :', freshUser);
+        setUser(freshUser as User);
+      } else {
+        console.warn('[Auth] Aucun userId trouvé dans le token (login)');
+      }
+    } catch (err) {
+      console.error('[Auth] Erreur lors du décodage du token ou de la récupération du profil (login) :', err);
     }
   };
 
