@@ -25,6 +25,16 @@ export interface LoginData {
 
 export interface LoginResponse {
   token: string;
+  user: {
+    id: string;
+    email: string;
+    firstName: string;
+    lastName: string;
+    phone?: string;
+    metier?: string;
+    competences?: string[];
+    isArtisan?: boolean;
+  };
 }
 
 class AuthService {
@@ -55,26 +65,22 @@ class AuthService {
     }
   }
 
+  async fetchProfile(userId: string) {
+    const response = await axios.get(`/users/${userId}`);
+    return response.data;
+  }
+
+  async updateProfile(userId: string, data: Partial<LoginResponse['user']>): Promise<LoginResponse['user']> {
+    const response = await axios.put(`/users/${userId}`, data);
+    return response.data as LoginResponse['user'];
+  }
+
   logout() {
     localStorage.removeItem('token');
   }
 
-  getCurrentUser() {
-    const token = localStorage.getItem('token');
-    if (!token) return null;
-    
-    try {
-      const base64Url = token.split('.')[1];
-      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-      const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
-        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-      }).join(''));
-
-      return JSON.parse(jsonPayload);
-    } catch (error) {
-      this.logout();
-      return null;
-    }
+  getToken() {
+    return localStorage.getItem('token');
   }
 }
 

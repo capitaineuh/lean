@@ -2,23 +2,25 @@
 
 import { createContext, useContext, useState, useEffect } from 'react';
 import type { ReactNode } from 'react';
+import authService from '@/services/auth.service';
 
 interface User {
   id: string;
-  email: string;
-  firstName: string;
-  lastName: string;
-  phone: string;
-  metier: string;
-  competences: string[];
+  email?: string;
+  firstName?: string;
+  lastName?: string;
+  phone?: string;
+  metier?: string;
+  competences?: string[];
+  isArtisan?: boolean;
 }
 
 interface AuthContextType {
   user: User | null;
-  login: (userData: User, token: string) => void;
+  login: (userData: User, token: string) => Promise<void>;
   logout: () => void;
   isAuthenticated: boolean;
-  updateUser: (userData: Partial<User>) => void;
+  updateUser: (userData: Partial<User>) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -27,30 +29,29 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
-    // Vérifier si l'utilisateur est déjà connecté au chargement
-    const storedUser = localStorage.getItem('user');
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
+    const token = authService.getToken();
+    if (token) {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      authService.fetchProfile(payload.sub).then((u) => setUser(u as User)).catch(() => setUser(null));
     }
   }, []);
 
-  const login = (userData: User, token: string) => {
-    setUser(userData);
-    localStorage.setItem('user', JSON.stringify(userData));
+  const login = async (_userData: User, token: string) => {
     localStorage.setItem('token', token);
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    const freshUser = await authService.fetchProfile(payload.sub);
+    setUser(freshUser as User);
   };
 
   const logout = () => {
     setUser(null);
-    localStorage.removeItem('user');
-    localStorage.removeItem('token');
+    authService.logout();
   };
 
-  const updateUser = (userData: Partial<User>) => {
+  const updateUser = async (userData: Partial<User>) => {
     if (user) {
-      const updatedUser = { ...user, ...userData };
-      setUser(updatedUser);
-      localStorage.setItem('user', JSON.stringify(updatedUser));
+      const updatedUser = await authService.updateProfile(user.id, userData);
+      setUser(updatedUser as User);
     }
   };
 
