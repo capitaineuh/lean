@@ -40,8 +40,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         if (userId) {
           authService.fetchProfile(userId)
             .then((u) => {
-              console.log('[Auth] Profil utilisateur récupéré via API :', u);
-              setUser(u as User);
+              const userObj = u as User;
+              const userWithId = { ...userObj, id: userObj.id || (userObj as any)._id };
+              console.log('[Auth] Profil utilisateur récupéré via API :', userWithId);
+              setUser(userWithId as User);
             })
             .catch((err) => {
               console.error('[Auth] Erreur lors de la récupération du profil utilisateur :', err);
@@ -68,8 +70,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       console.log('[Auth] userId extrait du token (login) :', userId);
       if (userId) {
         const freshUser = await authService.fetchProfile(userId);
-        console.log('[Auth] Profil utilisateur récupéré via API (login) :', freshUser);
-        setUser(freshUser as User);
+        const userObj = freshUser as User;
+        const userWithId = { ...userObj, id: userObj.id || (userObj as any)._id };
+        console.log('[Auth] Profil utilisateur récupéré via API (login) :', userWithId);
+        setUser(userWithId as User);
       } else {
         console.warn('[Auth] Aucun userId trouvé dans le token (login)');
       }
@@ -85,6 +89,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const updateUser = async (userData: Partial<User>) => {
     if (user) {
+      console.log('[Auth] updateUser appelé avec user.id =', user.id);
       const updatedUser = await authService.updateProfile(user.id, userData);
       setUser(updatedUser as User);
     }
