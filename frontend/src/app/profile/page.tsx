@@ -52,13 +52,17 @@ export default function ProfilePage() {
 
   useEffect(() => {
     if (user) {
-      setProfile(prev => ({
-        ...prev,
+      console.log('User récupéré du backend :', user);
+      setProfile({
         firstName: user.firstName || '',
         lastName: user.lastName || '',
         email: user.email || '',
-        metier: user.metier || ''
-      }));
+        phone: user.phone || '',
+        metier: user.metier || '',
+        competences: user.competences || [],
+      });
+    } else {
+      console.log('Aucun user trouvé');
     }
   }, [user]);
 
