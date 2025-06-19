@@ -14,8 +14,8 @@ async function bootstrap() {
     // Configuration CORS
     app.enableCors({
       origin: [
-        'https://lean-startup-jet.vercel.app', // ton frontend Vercel
-        'http://localhost:3000',               // pour le dev local
+        'https://lean-umber.vercel.app', // frontend Vercel
+        'http://localhost:3000',         // dev local
       ],
       credentials: true, // si tu utilises des cookies ou l'authentification
     });

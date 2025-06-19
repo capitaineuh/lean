@@ -1,10 +1,9 @@
 import axios from 'axios';
+import { API_ENDPOINTS } from '@/config/api';
 
 // Configuration d'axios
-axios.defaults.baseURL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+axios.defaults.baseURL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
 axios.defaults.headers.common['Content-Type'] = 'application/json';
-
-const API_URL = '/api';
 
 export interface RegisterData {
   email: string;
@@ -31,7 +30,7 @@ export interface LoginResponse {
 class AuthService {
   async register(data: RegisterData): Promise<RegisterResponse> {
     try {
-      const response = await axios.post<RegisterResponse>(`${API_URL}/auth/register`, data);
+      const response = await axios.post<RegisterResponse>(API_ENDPOINTS.AUTH.REGISTER, data);
       return response.data;
     } catch (error: any) {
       if (error.response?.data?.message) {
@@ -43,7 +42,7 @@ class AuthService {
 
   async login(data: LoginData): Promise<LoginResponse> {
     try {
-      const response = await axios.post<LoginResponse>(`${API_URL}/auth/login`, data);
+      const response = await axios.post<LoginResponse>(API_ENDPOINTS.AUTH.LOGIN, data);
       if (response.data.token) {
         localStorage.setItem('token', response.data.token);
       }
