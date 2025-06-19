@@ -34,7 +34,11 @@ export default function LoginPage() {
       }
 
       login(data.user, data.access_token);
-      router.push('/');
+      if (data.user.isArtisan) {
+        router.push('/app/artisans');
+      } else {
+        router.push('/profile');
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Une erreur est survenue');
     } finally {
