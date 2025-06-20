@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
+import { API_BASE_URL } from '@/config/api';
 
 interface Artisan {
   id: string;
@@ -55,7 +56,7 @@ export default function ArtisansPage() {
   const fetchArtisans = async () => {
     try {
       setLoading(true);
-      const response = await fetch('/api/artisans?' + new URLSearchParams({
+      const response = await fetch(`${API_BASE_URL}/artisans?` + new URLSearchParams({
         metier: filters.metier,
         localisation: filters.localisation,
         note: filters.note.toString()
