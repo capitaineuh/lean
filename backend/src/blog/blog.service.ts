@@ -10,10 +10,10 @@ export class BlogService {
     @InjectModel(Blog.name) private blogModel: Model<BlogDocument>,
   ) {}
 
-  async create(createBlogDto: CreateBlogDto, author: string): Promise<Blog> {
+  async create(createBlogDto: CreateBlogDto): Promise<Blog> {
     const createdBlog = new this.blogModel({
       ...createBlogDto,
-      author,
+      author: 'Admin',
     });
     return createdBlog.save();
   }

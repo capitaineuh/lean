@@ -43,7 +43,7 @@ let AuthService = AuthService_1 = class AuthService {
     }
     async login(user) {
         console.log('[BACK] user._id:', user._id);
-        const payload = { email: user.email, sub: user._id };
+        const payload = { email: user.email, sub: user._id, role: user.role, username: user.firstName };
         console.log('[BACK] payload JWT:', payload);
         return {
             access_token: this.jwtService.sign(payload),
@@ -53,6 +53,7 @@ let AuthService = AuthService_1 = class AuthService {
                 firstName: user.firstName,
                 lastName: user.lastName,
                 isArtisan: user.isArtisan,
+                role: user.role,
             },
         };
     }

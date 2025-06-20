@@ -18,6 +18,7 @@ export declare class AuthController {
             firstName: any;
             lastName: any;
             isArtisan: any;
+            role: any;
         };
     }>;
     getProfile(req: any): any;

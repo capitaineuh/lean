@@ -18,6 +18,6 @@ export class BlogController {
     if (req.user.role !== 'admin') {
       throw new ForbiddenException('Seul un administrateur peut ajouter un article.');
     }
-    return this.blogService.create(createBlogDto, req.user.username);
+    return this.blogService.create(createBlogDto);
   }
 } 

@@ -18,6 +18,7 @@ export declare class AuthService {
             firstName: any;
             lastName: any;
             isArtisan: any;
+            role: any;
         };
     }>;
     register(registerDto: RegisterDto): Promise<{
