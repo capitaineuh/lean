@@ -31,7 +31,7 @@ export class AuthService {
 
   async login(user: any) {
     console.log('[BACK] user._id:', user._id);
-    const payload = { email: user.email, sub: user._id };
+    const payload = { email: user.email, sub: user._id, role: user.role };
     console.log('[BACK] payload JWT:', payload);
     return {
       access_token: this.jwtService.sign(payload),
@@ -41,6 +41,7 @@ export class AuthService {
         firstName: user.firstName,
         lastName: user.lastName,
         isArtisan: user.isArtisan,
+        role: user.role,
       },
     };
   }
