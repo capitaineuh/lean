@@ -37,7 +37,7 @@ export class ArtisansService {
     }
 
     // Récupère uniquement les artisans (exclut les clients)
-    query.role = 'artisan';
+    query.isArtisan = true;
 
     const artisans = await this.userModel.find(query).select({
       _id: 1,
