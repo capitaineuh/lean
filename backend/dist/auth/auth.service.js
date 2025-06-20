@@ -33,14 +33,18 @@ let AuthService = AuthService_1 = class AuthService {
     }
     async validateUser(email, password) {
         const user = await this.usersService.findByEmail(email);
+        console.log('[BACK] Utilisateur trouvé dans validateUser:', user);
         if (user && await bcrypt.compare(password, user.password)) {
-            const { password, ...result } = user;
-            return result;
+            const userObj = user.toObject ? user.toObject() : { ...user };
+            delete userObj.password;
+            return userObj;
         }
         return null;
     }
     async login(user) {
+        console.log('[BACK] user._id:', user._id);
         const payload = { email: user.email, sub: user._id };
+        console.log('[BACK] payload JWT:', payload);
         return {
             access_token: this.jwtService.sign(payload),
             user: {

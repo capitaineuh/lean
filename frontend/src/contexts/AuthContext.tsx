@@ -13,6 +13,7 @@ interface User {
   metier?: string;
   competences?: string[];
   isArtisan?: boolean;
+  role?: string;
 }
 
 interface AuthContextType {

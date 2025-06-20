@@ -7,13 +7,14 @@ import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { TendersModule } from './tenders/tenders.module';
 import { ArtisansModule } from './artisans/artisans.module';
+import { BlogModule } from './blog/blog.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    MongooseModule.forRoot(process.env.MONGODB_URI || 'mongodb://localhost:27017/leanstartup', {
+    MongooseModule.forRoot(process.env.MONGODB_URI || 'mongodb://localhost:3001/leanstartup', {
       connectionFactory: (connection) => {
         connection.on('connected', () => {
           console.log('✅ MongoDB is connected');
@@ -31,6 +32,7 @@ import { ArtisansModule } from './artisans/artisans.module';
     AuthModule,
     TendersModule,
     ArtisansModule,
+    BlogModule,
   ],
   controllers: [AppController],
   providers: [AppService],
