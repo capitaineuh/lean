@@ -16,8 +16,15 @@ export class TendersService {
     return createdTender.save();
   }
 
-  async findAll(): Promise<Tender[]> {
-    return this.tenderModel.find().exec();
+  async findAll(filters: { location?: string; category?: string }): Promise<Tender[]> {
+    const query: any = {};
+    if (filters.location) {
+      query.location = { $regex: filters.location, $options: 'i' };
+    }
+    if (filters.category) {
+      query.category = filters.category;
+    }
+    return this.tenderModel.find(query).exec();
   }
 
   async findOne(id: string): Promise<Tender> {

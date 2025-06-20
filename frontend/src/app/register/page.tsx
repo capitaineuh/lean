@@ -55,14 +55,8 @@ export default function RegisterPage() {
     setLoading(true);
 
     try {
-      const { isArtisan } = await authService.register(formData);
-      
-      // Redirection en fonction du type d'utilisateur
-      if (isArtisan) {
-        router.push('/?registered=true'); // Page principale pour les artisans
-      } else {
-        router.push('/artisans?registered=true'); // Page des artisans pour les particuliers
-      }
+      await authService.register(formData);
+      router.push('/login?registered=true'); // Redirige systématiquement vers la page de connexion
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Une erreur est survenue');
     } finally {

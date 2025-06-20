@@ -35,9 +35,9 @@ export default function LoginPage() {
 
       await login(data.user, data.access_token);
       if (data.user.isArtisan) {
-        router.push('/app/artisans');
+        router.push('/projets');
       } else {
-        router.push('/profile');
+        router.push('/artisans');
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Une erreur est survenue');

@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, Put, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Put, Delete, UseGuards, Query } from '@nestjs/common';
 import { TendersService } from './tenders.service';
 import { Tender } from './schemas/tender.schema';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
@@ -16,8 +16,11 @@ export class TendersController {
   }
 
   @Get()
-  findAll(): Promise<Tender[]> {
-    return this.tendersService.findAll();
+  findAll(
+    @Query('location') location?: string,
+    @Query('category') category?: string,
+  ): Promise<Tender[]> {
+    return this.tendersService.findAll({ location, category });
   }
 
   @Get(':id')
