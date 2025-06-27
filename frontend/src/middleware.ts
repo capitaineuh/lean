@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
 // Liste des routes publiques
-const publicRoutes = ['/guide', '/login', '/register', '/profile', '/projets', '/artisans', '/blog', '/demande_restauration', '/avis', '/candidatures', '/mesProjets'];
+const publicRoutes = ['/guide', '/login', '/register', '/profile', '/projets', '/artisans', '/blog', '/demande_restauration', '/avis', '/candidatures', '/mesProjets', '/messages'];
 
 export function middleware(request: NextRequest) {
   const token = request.cookies.get('token');
