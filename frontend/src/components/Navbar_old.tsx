@@ -36,7 +36,7 @@ export default function Navbar() {
               <div className="flex items-center space-x-4">
                 <Link
                   href="/profile"
-                  className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium"
+                  className="bg-[#ED6A2C] hover:bg-orange-600 text-white px-4 py-2 rounded-md text-sm font-medium"
                 >
                   Mon Profil
                 </Link>
@@ -57,13 +57,13 @@ export default function Navbar() {
               <div className="flex items-center space-x-4">
                 <Link
                   href="/login"
-                  className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium"
+                  className="bg-[#ED6A2C] hover:bg-orange-600 text-white px-4 py-2 rounded-md text-sm font-medium"
                 >
                   Connexion
                 </Link>
                 <Link
                   href="/register"
-                  className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium"
+                  className="bg-[#ED6A2C] hover:bg-orange-600 text-white px-4 py-2 rounded-md text-sm font-medium"
                 >
                   Inscription
                 </Link>

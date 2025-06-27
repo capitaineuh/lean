@@ -212,7 +212,7 @@ export default function ArtisansPage() {
                   </div>
 
                   <button
-                    className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 transition-colors duration-300"
+                    className="w-full bg-[#ED6A2C] text-white py-2 px-4 rounded-md hover:bg-orange-600 transition-colors duration-300"
                     onClick={() => {/* TODO: Implémenter la redirection vers le profil de l'artisan */}}
                   >
                     Voir le profil

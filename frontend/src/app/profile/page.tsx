@@ -170,7 +170,7 @@ export default function ProfilePage() {
               </div>
               <button
                 onClick={() => setIsEditing(!isEditing)}
-                className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium"
+                className="bg-[#ED6A2C] hover:bg-orange-600 text-white px-4 py-2 rounded-md text-sm font-medium"
               >
                 {isEditing ? 'Annuler' : 'Modifier'}
               </button>
@@ -431,14 +431,14 @@ export default function ProfilePage() {
                           {profile.competences.map((competence, index) => (
                             <span
                               key={index}
-                              className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800"
+                              className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-orange-100 text-orange-800"
                             >
                               {competence}
                               {isEditing && (
                                 <button
                                   type="button"
                                   onClick={() => handleRemoveCompetence(competence)}
-                                  className="ml-2 text-blue-600 hover:text-blue-800"
+                                  className="ml-2 text-[#ED6A2C] hover:text-orange-700"
                                 >
                                   ×
                                 </button>
@@ -458,7 +458,7 @@ export default function ProfilePage() {
                             <button
                               type="button"
                               onClick={handleAddCompetence}
-                              className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium"
+                              className="bg-[#ED6A2C] hover:bg-orange-600 text-white px-4 py-2 rounded-md text-sm font-medium"
                             >
                               Ajouter
                             </button>
@@ -503,7 +503,7 @@ export default function ProfilePage() {
                   <button
                     type="submit"
                     disabled={loading}
-                    className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-md text-sm font-medium disabled:opacity-50"
+                    className="bg-[#ED6A2C] hover:bg-orange-600 text-white px-6 py-2 rounded-md text-sm font-medium disabled:opacity-50"
                   >
                     {loading ? 'Enregistrement...' : 'Enregistrer les modifications'}
                   </button>

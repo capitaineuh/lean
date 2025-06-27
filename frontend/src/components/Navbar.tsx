@@ -17,6 +17,18 @@ const UserCircleIcon = () => (
     </svg>
 );
 
+const HamburgerIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+  </svg>
+);
+
+const CloseIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+  </svg>
+);
+
 const MementoLogo = () => (
   <svg width="120" height="40" viewBox="0 0 120 40" fill="none" xmlns="http://www.w3.org/2000/svg">
     {/* M */}
@@ -47,7 +59,9 @@ export default function Navbar() {
   const router = useRouter();
   const pathname = usePathname();
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const mobileMenuRef = useRef<HTMLDivElement>(null);
 
   const handleLogoClick = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -76,12 +90,20 @@ export default function Navbar() {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setDropdownOpen(false);
       }
+      if (mobileMenuRef.current && !mobileMenuRef.current.contains(event.target as Node)) {
+        setMobileMenuOpen(false);
+      }
     }
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [dropdownRef]);
+  }, [dropdownRef, mobileMenuRef]);
+
+  // Fermer le menu mobile lors du changement de route
+  useEffect(() => {
+    setMobileMenuOpen(false);
+  }, [pathname]);
 
   // Génération dynamique des liens selon le type d'utilisateur
   const getNavLinks = () => {
@@ -110,34 +132,31 @@ export default function Navbar() {
     <nav className="bg-white border-b">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-20 items-center">
-          <div className="flex-shrink-0 flex items-center space-x-4">
-            <a href="#" onClick={handleLogoClick} className="cursor-pointer flex items-center">
-              <img src="/logo.png" alt="Memento Logo" className="h-12 w-auto" style={{maxWidth: '220px'}} />
+          <div className="flex-shrink-0 flex items-center space-x-2 md:space-x-4">
+            <a href="#" onClick={handleLogoClick} className="cursor-pointer flex items-center mr-1 md:mr-0">
+              <img src="/logo.png" alt="Memento Logo" className="h-6 md:h-12 w-auto max-w-[90px] md:max-w-[220px]" />
             </a>
             <span className="text-gray-400">|</span>
-            <span className="text-gray-500">{getUserType()}</span>
+            <span className="text-gray-500 text-sm md:text-base">{getUserType()}</span>
           </div>
 
-          {isAuthenticated ? (
-            <div className="flex items-center space-x-8">
-              <div className="hidden md:flex items-center space-x-8">
-                {getNavLinks().map((link) => (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    className={`text-sm font-medium ${
-                      pathname.startsWith(link.href)
-                        ? 'text-orange-500'
-                        : 'text-gray-600 hover:text-gray-900'
-                    }`}
-                  >
-                    {link.label}
-                  </Link>
-                ))}
-              </div>
+          {/* Desktop Navigation */}
+          {isAuthenticated && (
+            <div className="hidden md:flex items-center space-x-8">
+              {getNavLinks().map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={`text-sm font-medium ${
+                    pathname.startsWith(link.href)
+                      ? 'text-orange-500'
+                      : 'text-gray-600 hover:text-gray-900'
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              ))}
             </div>
-          ) : (
-            <div></div>
           )}
 
           <div className="flex items-center space-x-4">
@@ -170,6 +189,15 @@ export default function Navbar() {
                     </div>
                   )}
                 </div>
+                {/* Mobile menu button */}
+                <div className="md:hidden">
+                  <button
+                    onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                    className="text-gray-600 hover:text-gray-900"
+                  >
+                    {mobileMenuOpen ? <CloseIcon /> : <HamburgerIcon />}
+                  </button>
+                </div>
               </div>
             ) : (
               <div className="flex items-center space-x-4">
@@ -189,6 +217,63 @@ export default function Navbar() {
             )}
           </div>
         </div>
+
+        {/* Mobile Navigation Menu */}
+        {isAuthenticated && mobileMenuOpen && (
+          <div ref={mobileMenuRef} className="md:hidden border-t border-gray-200">
+            <div className="px-2 pt-2 pb-3 space-y-1">
+              {getNavLinks().map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={`block px-3 py-2 rounded-md text-base font-medium ${
+                    pathname.startsWith(link.href)
+                      ? 'text-orange-500 bg-orange-50'
+                      : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+                  }`}
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  {link.label}
+                </Link>
+              ))}
+              <div className="border-t border-gray-200 pt-4 pb-3">
+                <div className="flex items-center px-3">
+                  <div className="flex-shrink-0">
+                    <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center">
+                      <UserCircleIcon />
+                    </div>
+                  </div>
+                  <div className="ml-3">
+                    <div className="text-base font-medium text-gray-800">
+                      {user?.email}
+                    </div>
+                    <div className="text-sm font-medium text-gray-500">
+                      {getUserType()}
+                    </div>
+                  </div>
+                </div>
+                <div className="mt-3 space-y-1">
+                  <Link
+                    href="/profile"
+                    className="block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Mon Profil
+                  </Link>
+                  <button
+                    onClick={() => {
+                      logout();
+                      setMobileMenuOpen(false);
+                    }}
+                    className="w-full text-left block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                  >
+                    Déconnexion
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </nav>
   );
